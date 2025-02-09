@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Job Application Tracker</title>
+        <!-- Update CSP to allow Google services -->
+        <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' 'unsafe-eval' https://apis.google.com https://accounts.google.com https://www.googleapis.com https://www.gstatic.com blob: data:;">
+        
+        <!-- Add Google Identity Services library -->
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+        <!-- Add Google API library -->
+        <script src="https://apis.google.com/js/api.js"></script>
+        
+        <link rel="stylesheet" href="style1.css">
+    </head>
+<body>
+    <div class="app-container">
+        <!-- Header Section -->
+        <header class="app-header">
+            <div class="header-content">
+                <h1 class="app-title">Job Application Tracker</h1>
+                <button class="btn btn-primary add-job-btn" onclick="openModal()">
+                    <span class="btn-icon">+</span>
+                    Add Job
+                </button>
+            </div>
+        </header>
+
+        <!-- Stats Dashboard -->
+        <section class="stats-dashboard">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon applications-icon">📝</div>
+                    <div class="stat-content">
+                        <h3>Total Applications</h3>
+                        <p id="total-apps" class="stat-number">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon interview-icon">🎯</div>
+                    <div class="stat-content">
+                        <h3>Interview Rate</h3>
+                        <p id="interview-rate" class="stat-number">0%</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon offer-icon">🎉</div>
+                    <div class="stat-content">
+                        <h3>Offer Rate</h3>
+                        <p id="offer-rate" class="stat-number">0%</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Kanban Board -->
+        <section class="kanban-board">
+            <div class="board-container">
+                <div class="column" id="applied">
+                    <div class="column-header">
+                        <h2>Applied</h2>
+                        <span class="column-counter"></span>
+                    </div>
+                    <div class="column-content"></div>
+                </div>
+                <div class="column" id="interview">
+                    <div class="column-header">
+                        <h2>Interview</h2>
+                        <span class="column-counter"></span>
+                    </div>
+                    <div class="column-content"></div>
+                </div>
+                <div class="column" id="offer">
+                    <div class="column-header">
+                        <h2>Offer</h2>
+                        <span class="column-counter"></span>
+                    </div>
+                    <div class="column-content"></div>
+                </div>
+                <div class="column" id="rejected">
+                    <div class="column-header">
+                        <h2>Rejected</h2>
+                        <span class="column-counter"></span>
+                    </div>
+                    <div class="column-content"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Job Recommendations -->
+        <section class="recommendations-section">
+            <div class="section-header">
+                <h2>Recommended Jobs</h2>
+                <div class="search-controls">
+                    <div class="field-select-wrapper">
+                        <select id="job-field-select" class="field-select">
+                            <option value="software developer">Software Developer</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="sales">Sales</option>
+                            <option value="project manager">Project Manager</option>
+                            <option value="data analyst">Data Analyst</option>
+                        </select>
+                    </div>
+                    <button id="search-recommendations" class="btn btn-secondary">Search</button>
+                </div>
+                <div class="keyword-search">
+                    <input type="text" id="keyword-input" class="search-input" placeholder="Search by company or keyword">
+                    <button id="keyword-search-button" class="btn btn-secondary">Search</button>
+                </div>
+            </div>
+            <div id="job-recommendations-list" class="recommendations-grid"></div>
+        </section>
+
+        <!-- Modals -->
+        <div class="modal" id="jobModal">
+            <div class="modal-content">
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+                <h2>Job Details</h2>
+                <form id="jobForm">
+                    <div class="form-group">
+                        <label for="company">Company</label>
+                        <input type="text" id="company" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="position">Position</label>
+                        <input type="text" id="position" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="notes">Notes</label>
+                        <textarea id="notes"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="modal" id="interviewDateModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Schedule Interview</h2>
+                    <button class="close-modal" onclick="closeInterviewDateModal()">&times;</button>
+                </div>
+                <form id="interviewDateForm" class="modal-form">
+                    <div class="form-group">
+                        <label for="interviewDate">Date and Time</label>
+                        <input type="datetime-local" id="interviewDate" required />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeInterviewDateModal()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            renderJobs();
+            updateStats();
+            addEditEventListeners();
+            addDeleteEventListeners();
+            fetchJobRecommendations();
+        });
+    </script>
+    <script src="script1.js"></script>
+</body>
+</html>
