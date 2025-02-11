@@ -23,7 +23,7 @@ const ADZUNA_API_KEY = '4a5f49cd8d4d5561f95d5f38bad1b6f4';
 function openModal() {
     const modal = document.getElementById("jobModal");
     modal.style.display = "flex";
-    document.body.style.overflow = "hidden";
+    modal.classList.add('show');
 }
 
 function closeModal() {
@@ -400,13 +400,6 @@ function saveJobs() {
 document.addEventListener('DOMContentLoaded', () => {
     // Add this style tag to the head to prevent FOUC (Flash of Unstyled Content)
     const style = document.createElement('style');
-    style.textContent = `
-        #interviewDateModal, #jobModal {
-            display: none !important;
-            visibility: hidden;
-            opacity: 0;
-        }
-    `;
     document.head.appendChild(style);
     
     // Rest of your initialization code
